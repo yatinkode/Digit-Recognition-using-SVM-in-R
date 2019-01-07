@@ -4,7 +4,7 @@ You are required to develop a model using Support Vector Machine which should co
 A classic problem in the field of pattern recognition is that of handwritten digit recognition. Suppose that you have an image of a digit submitted by a user via a scanner, a tablet, or other digital devices. The goal is to develop a model that can correctly identify the digit (between 0-9) written in an image. 
 
 
-###Loading needed libraries
+### Loading needed libraries
 
 ```R
 load.libraries <- c('caret','kernlab','dplyr','readr','ggplot2','gridExtra','caTools','e1071')
@@ -24,7 +24,7 @@ theme_gg <- function () {
     )
 }
 ```
-### Data Loading
+### Data Loading and Understanding
 ```R
 #loading dataset mnist_train.csv and mnist_test.csv
 mnist_train<- read.csv("mnist_train.csv")
@@ -56,3 +56,18 @@ tail(mnist_complete[1:10])
 #69997  0  0    0    0    0    0    0    0    0    0
 #69998  0  0    0    0    0    0    0    0    0    0
 ```
+
+### Plotting Average Intensity of Digits
+```R
+#Calculating average pixel intensity
+mnist_complete$pixavgint <- apply(mnist_complete[,-1], 1, mean) #takes the mean of each row in train
+
+intbylabel <- aggregate (mnist_complete$pixavgint, by = list(mnist_complete$X5), FUN = mean)
+
+#Plotting average intensity for each digit
+ggplot(data=intbylabel, aes(x=Group.1, y = x)) +
+  geom_bar(stat="identity") +
+  labs(x = "Digit",y = "Average Intensity",title = "Fig : Average Intensity of Digits" )+theme_gg()
+#The intensity for digit 1 is less compared to other digits. Since digit 1 has less number of filled pixels compared to other digits
+```
+
