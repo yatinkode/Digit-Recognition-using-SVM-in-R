@@ -377,11 +377,15 @@ fit.svm_radial <- train(X5~., data=train, method="svmRadial", metric=metric, tun
 # Printing cross validation result
 print(fit.svm_radial)
 # Best tune at sigma = 3.6e-07 & C=4
+```
 
+#### Getting the best value for Cost vs Sigma vs Accuracy for the Radial Model
+```R
 # Plotting fit.svm_radial results
 plot(fit.svm_radial,main = "Sigma,Cost vs Accuracy for RBF Model")
 #Accuracy is highest at C=3 and increases with increasing value of sigma
 ```
+![data](https://github.com/yatinkode/Digit-Recognition-using-SVM-in-R/blob/main/images/sigmacostaccuracy.png)
 
 ### Final Model
 ```R
