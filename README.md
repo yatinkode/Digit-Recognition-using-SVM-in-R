@@ -24,6 +24,9 @@ theme_gg <- function () {
     )
 }
 ```
+
+
+
 ### Data Loading and Understanding
 ```R
 #loading dataset mnist_train.csv and mnist_test.csv
@@ -57,7 +60,7 @@ tail(mnist_complete[1:10])
 #69998  0  0    0    0    0    0    0    0    0    0
 ```
 
-### Plotting Average Intensity of Digits
+#### Plotting Average Intensity of Digits
 ```R
 #Calculating average pixel intensity
 mnist_complete$pixavgint <- apply(mnist_complete[,-1], 1, mean) #takes the mean of each row in train
@@ -73,7 +76,7 @@ ggplot(data=intbylabel, aes(x=Group.1, y = x)) +
 ```
 ![data](https://github.com/yatinkode/Digit-Recognition-using-SVM-in-R/blob/main/images/AverageIntensity.png)
 
-### Plotting pixel Intensity of all digits
+#### Plotting pixel Intensity of all digits
 ```R
 plot0<-ggplot(data=subset(mnist_complete, X5 ==0),aes(pixavgint))+geom_histogram(binwidth = .75)+theme_gg()+labs(x="intensity of 0") 
 
@@ -107,7 +110,7 @@ unique(mnist_complete$X5)
 #Levels: 0 1 2 3 4 5 6 7 8 9
 ```
 
-### Count of Digits in Dependent Variable X5
+#### Count of Digits in Dependent Variable X5
 ```R
 #Checking occurences of X5 in the dataset
 ggplot(mnist_complete, aes(x=as.factor(X5))) + geom_histogram(stat="count")+
@@ -123,7 +126,7 @@ flip <- function(matrix){
   apply(matrix, 2, rev)
 }
 ```
-### Plotting different ways to write Digit 0
+#### Plotting different ways to write Digit 0
 ```R
 digit0 <- mnist_complete[mnist_complete$X5 == 0, ]
 digit0 <-  digit0[,-c(1,786)]
@@ -136,7 +139,7 @@ for (i in 10:18){
 ```
 ![data](https://github.com/yatinkode/Digit-Recognition-using-SVM-in-R/blob/main/images/0image.png)
 
-### Plotting different ways to write Digit 1
+#### Plotting different ways to write Digit 1
 ```R
 digit1 <- mnist_complete[mnist_complete$X5 == 1, ]
 digit1 <-  digit1[ ,-c(1,786)]
@@ -149,7 +152,7 @@ for (i in 10:18){
 ```
 ![data](https://github.com/yatinkode/Digit-Recognition-using-SVM-in-R/blob/main/images/1image.png)
 
-### Plotting different ways to write Digit 2
+#### Plotting different ways to write Digit 2
 ```R
 digit2 <- mnist_complete[mnist_complete$X5 == 2, ]
 digit2 <-  digit2[,-c(1,786)]
@@ -162,7 +165,7 @@ for (i in 10:18){
 ```
 ![data](https://github.com/yatinkode/Digit-Recognition-using-SVM-in-R/blob/main/images/2image.png)
 
-### Plotting different ways to write Digit 3
+#### Plotting different ways to write Digit 3
 ```R
 digit3 <- mnist_complete[mnist_complete$X5 == 3, ]
 digit3 <-  digit3[,-c(1,786)]
@@ -175,7 +178,7 @@ for (i in 10:18){
 ```
 ![data](https://github.com/yatinkode/Digit-Recognition-using-SVM-in-R/blob/main/images/3image.png)
 
-### Plotting different ways to write Digit 4
+#### Plotting different ways to write Digit 4
 ```R
 digit4 <- mnist_complete[mnist_complete$X5 == 4, ]
 digit4 <-  digit4[,-c(1,786)]
@@ -188,7 +191,7 @@ for (i in 10:18){
 ```
 ![data](https://github.com/yatinkode/Digit-Recognition-using-SVM-in-R/blob/main/images/4image.png)
 
-### Plotting different ways to write Digit 5
+#### Plotting different ways to write Digit 5
 ```R
 digit5 <- mnist_complete[mnist_complete$X5 == 5, ]
 digit5 <-  digit5[,-c(1,786)]
@@ -201,7 +204,7 @@ for (i in 10:18){
 ```
 ![data](https://github.com/yatinkode/Digit-Recognition-using-SVM-in-R/blob/main/images/5image.png)
 
-### Plotting different ways to write Digit 6
+#### Plotting different ways to write Digit 6
 ```R
 digit6 <- mnist_complete[mnist_complete$X5 == 6, ]
 digit6 <-  digit6[,-c(1,786)]
@@ -214,7 +217,7 @@ for (i in 10:18){
 ```
 ![data](https://github.com/yatinkode/Digit-Recognition-using-SVM-in-R/blob/main/images/6image.png)
 
-### Plotting different ways to write Digit 7
+#### Plotting different ways to write Digit 7
 ```R
 digit7 <- mnist_complete[mnist_complete$X5 == 7, ]
 digit7 <-  digit7[,-c(1,786)]
@@ -227,7 +230,7 @@ for (i in 10:18){
 ```
 ![data](https://github.com/yatinkode/Digit-Recognition-using-SVM-in-R/blob/main/images/7image.png)
 
-### Plotting different ways to write Digit 8
+#### Plotting different ways to write Digit 8
 ```R
 digit8 <- mnist_complete[mnist_complete$X5 == 8, ]
 digit8 <-  digit8[,-c(1,786)]
@@ -240,7 +243,7 @@ for (i in 10:18){
 ```
 ![data](https://github.com/yatinkode/Digit-Recognition-using-SVM-in-R/blob/main/images/8image.png)
 
-### Plotting different ways to write Digit 9
+#### Plotting different ways to write Digit 9
 ```R
 digit9 <- mnist_complete[mnist_complete$X5 == 9, ]
 digit9 <-  digit9[ ,-c(1,786)]
@@ -252,6 +255,8 @@ for (i in 10:18){
 }
 ```
 ![data](https://github.com/yatinkode/Digit-Recognition-using-SVM-in-R/blob/main/images/9image.png)
+
+
 
 ### Preparing Data for Modelling
 ```R
@@ -270,6 +275,7 @@ str(mnist)
 sum(is.na(mnist))             #There are no NA values in the dataset
 ```
 
+
 ### Divide data into train and test
 ```R
 indices = sample.split(mnist$X5, SplitRatio = 0.70)
@@ -277,6 +283,8 @@ indices = sample.split(mnist$X5, SplitRatio = 0.70)
 train = mnist[indices,]
 test = mnist[!(indices),]
 ```
+
+
 ### Model Building
 
 ```R
