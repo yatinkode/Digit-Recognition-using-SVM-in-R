@@ -68,6 +68,8 @@ intbylabel <- aggregate (mnist_complete$pixavgint, by = list(mnist_complete$X5),
 ggplot(data=intbylabel, aes(x=Group.1, y = x)) +
   geom_bar(stat="identity") +
   labs(x = "Digit",y = "Average Intensity",title = "Fig : Average Intensity of Digits" )+theme_gg()
-#The intensity for digit 1 is less compared to other digits. Since digit 1 has less number of filled pixels compared to other digits
+#The intensity for digit 1 is less compared to other digits. 
+#Since digit 1 has less number of filled pixels compared to other digits
 ```
+![data](https://github.com/yatinkode/Digit-Recognition-using-SVM-in-R/blob/main/images/AverageIntensity.png)
 
