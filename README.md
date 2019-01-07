@@ -277,4 +277,128 @@ indices = sample.split(mnist$X5, SplitRatio = 0.70)
 train = mnist[indices,]
 test = mnist[!(indices),]
 ```
+### Model Building
+
+```R
+#------------------------------ Linear model - SVM  at Cost(C) = 1 -------------
+
+#Converting dependent variables to factor
+train$X5 <- as.factor(train$X5)
+test$X5 <- as.factor(test$X5)
+
+linear_model <- ksvm(X5~., data = train, scaled = F, kernel = "vanilladot")
+
+print(linear_model)
+
+# Predicting the model results 
+evaluate_1<- predict(linear_model, test)
+
+# Confusion Matrix - Finding accuracy, Sensitivity and specificity
+confusionMatrix(evaluate_1, test$X5)
+#Accuracy : 0.9162
+#Sensitivity : 0.903196
+#Specificity : 0.990649
+
+#              Class:0  Class:1  Class:2  Class:3  Class:4  Class:5  Class:6  Class:7  Class:8  Class:9
+#Sensitivity:  0.9846   0.98350  0.88060  0.86232  0.90494  0.83607  0.95489  0.90780  0.84411  0.87313
+#Specificity:  0.9881   0.99086  0.99028  0.99095  0.99064  0.98898  0.99376  0.99477  0.98960  0.98855
+
+#--------------------------------------------- RBF MODEL - SVM at Cost(C) = 1 --------------------
+
+rbf_model <- ksvm(X5~., data = train, scaled = F, kernel = "rbfdot")
+
+print(rbf_model)                  #Get the values of C and sigma for further reference for cross validation
+#C=1
+#sigma= 1.59817433685909e-07 
+
+# Predicting the model results 
+evaluate_rbf<- predict(rbf_model, test)
+
+# Confusion Matrix - Finding accuracy, Sensitivity and specificity
+confusionMatrix(evaluate_rbf, test$X5)
+
+#Accuracy : 0.9571
+
+#               Class:0  Class:1   Class:2  Class:3  Class:4  Class:5  Class:6  Class:7  Class:8   Class:9
+#Sensitivity    0.9916   0.98680   0.92537  0.93478  0.93916  0.95492  0.95865  0.94681  0.95057   0.92164
+#Specificity    0.9897   0.99543   0.99653  0.99722  0.99480  0.99518  0.99688  0.99791  0.99376   0.99410
+
+#Sensitivity : 0.929341
+#Specificity : 0.895633
+```
+
+### Model Evaluation
+
+#### Hyperparameter tuning and Cross Validation  - Linear Model
+```R
+metric<-"Accuracy"
+trainControl <- trainControl(method="cv", number=2)
+trainControl <- trainControl(method="cv", number=5, verboseIter = TRUE)
+
+# making a grid of C values. 
+grid <- expand.grid(C=seq(1, 5, by=1))
+
+# Performing 5-fold cross validation
+fit.svm <- train(X5~., data=train, method="svmLinear", metric=metric, tuneGrid=grid, trControl=trainControl)
+
+# Printing cross validation result
+print(fit.svm)
+
+# Plotting "fit.svm" results
+plot(fit.svm,main = "Cost vs Accuracy for Linear Model")
+# Accuracy remains same at all values of C
+```
+
+
+
+#### Hyperparameter tuning and Cross Validation  - RBF
+```R
+# We will use the train function from caret package to perform crossvalidation
+
+# Making grid of "sigma" and C values.
+# Range for Sigma and C values are being considered from the rbf model obtained earlier
+grid <- expand.grid(.sigma=c(1.6e-07, 2.6e-07,3.6e-07,4.6e-07), .C=c(3,4,5))
+
+# Performing 5-fold cross validation
+fit.svm_radial <- train(X5~., data=train, method="svmRadial", metric=metric, tuneGrid=grid, trControl=trainControl)
+
+
+# Printing cross validation result
+print(fit.svm_radial)
+# Best tune at sigma = 3.6e-07 & C=4
+
+# Plotting fit.svm_radial results
+plot(fit.svm_radial,main = "Sigma,Cost vs Accuracy for RBF Model")
+#Accuracy is highest at C=3 and increases with increasing value of sigma
+```
+
+### Final Model
+```R
+f_model <- ksvm(X5~., data = train, scaled = F, kernel = "rbfdot",C=4,sigma=3.6e-07)
+
+evaluate_f<- predict(f_model, test)
+
+# Confusion Matrix - Finding accuracy, Sensitivity and specificity
+confusionMatrix(evaluate_f, test$X5)
+cf_final<-confusionMatrix(evaluate_f, test$X5)
+
+mean(cf_final$byClass[,1])
+#Sensitivity =  0.95967
+
+mean(cf_final$byClass[,2])
+#Specificity = 0.9960425
+```
+
+```R
+############ Final Model ##########
+#                                 #
+#  Type               Radial      #
+#  C                  4           #
+#  Sigma              3.6e-07     #
+#  Accuracy           0.9651      #
+#  Sensitivity        0.95967     #
+#  Specificity        0.9960425   #
+#                                 #
+###################################
+```
 
