@@ -343,12 +343,15 @@ fit.svm <- train(X5~., data=train, method="svmLinear", metric=metric, tuneGrid=g
 
 # Printing cross validation result
 print(fit.svm)
+```
+#### Getting the best value for Cost with Highest Accuracy for the Linear Model
 
+```R
 # Plotting "fit.svm" results
 plot(fit.svm,main = "Cost vs Accuracy for Linear Model")
 # Accuracy remains same at all values of C
 ```
-
+![data](https://github.com/yatinkode/Digit-Recognition-using-SVM-in-R/blob/main/images/costaccuracylinear.png)
 
 
 #### Hyperparameter tuning and Cross Validation  - RBF
