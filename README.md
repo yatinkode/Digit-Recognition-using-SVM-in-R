@@ -7,7 +7,7 @@ A classic problem in the field of pattern recognition is that of handwritten dig
 load.libraries <- c('caret','kernlab','dplyr','readr','ggplot2','gridExtra','caTools','e1071')
 install.lib <- load.libraries[!load.libraries %in% installed.packages()]
 for(libs in install.lib) install.packages(libs, dependences = TRUE)
-sapply(load.libraries, require, character = TRUE) ```
+sapply(load.libraries, require, character = TRUE)
 
 #loading theme for ggplot
 theme_gg <- function () { 
@@ -20,4 +20,35 @@ theme_gg <- function () {
       legend.position="bottom"
     )
 }
+```
 
+
+#loading dataset mnist_train.csv and mnist_test.csv
+mnist_train<- read.csv("mnist_train.csv")
+mnist_test<- read.csv("mnist_test.csv")
+
+#combining train and test data into single dataset mnist_complete
+mnist_complete<-rbind(mnist_train, setNames(rev(mnist_test), names(mnist_train)))
+
+str(mnist_complete)
+#69998 obs. of  785 variables
+
+sum(is.na(mnist_complete))      #No NA values in the dataset
+
+head(mnist_complete[1:10])
+#X5 X0 X0.1 X0.2 X0.3 X0.4 X0.5 X0.6 X0.7 X0.8
+#1  0  0    0    0    0    0    0    0    0    0
+#2  4  0    0    0    0    0    0    0    0    0
+#3  1  0    0    0    0    0    0    0    0    0
+#4  9  0    0    0    0    0    0    0    0    0
+#5  2  0    0    0    0    0    0    0    0    0
+#6  1  0    0    0    0    0    0    0    0    0
+
+tail(mnist_complete[1:10])
+#      X5 X0 X0.1 X0.2 X0.3 X0.4 X0.5 X0.6 X0.7 X0.8
+#69993  0  0    0    0    0    0    0    0    0    0
+#69994  0  0    0    0    0    0    0    0    0    0
+#69995  0  0    0    0    0    0    0    0    0    0
+#69996  0  0    0    0    0    0    0    0    0    0
+#69997  0  0    0    0    0    0    0    0    0    0
+#69998  0  0    0    0    0    0    0    0    0    0
