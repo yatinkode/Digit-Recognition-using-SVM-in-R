@@ -71,5 +71,7 @@ ggplot(data=intbylabel, aes(x=Group.1, y = x)) +
 #The intensity for digit 1 is less compared to other digits. 
 #Since digit 1 has less number of filled pixels compared to other digits
 ```
+<p align="center">
 ![data](https://github.com/yatinkode/Digit-Recognition-using-SVM-in-R/blob/main/images/AverageIntensity.png)
+  </p>
 
